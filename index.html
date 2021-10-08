@@ -13,26 +13,46 @@
 
             $("#btn_bater_foto").on("click", function () {
 
-                Webcam.snap(function (data_uri) {
-                    document.getElementById('results').innerHTML = '<img id="base64image" src="' + data_uri + '"/>';
-                    //document.getElementById('miguel_teste').innerHTML = data_uri    ;
-                    $("#miguel_teste").val(data_uri);
-                });
 
 
-                var arquivo = $("#miguel_teste").val();
-                var ip_servidor = $("#ip_servidor").val();
-                // teste = "opie";
-                $.ajax({
-                    url: 'enviar_imagem.php',
-                    data: {arquivo: arquivo,ip_servidor:ip_servidor},
-                    context: document.body,
-                    success: function (data) {
-                        $("#salva").html(data);
+                var tempo_sec = $("#tempo_sec").val();
+                var time = 0;
 
-                    },
-                    type: 'POST'
-                });
+                var interval = setInterval(function() {
+                    if (time <= 1500) {
+                        //alert(time);
+                        Webcam.snap(function (data_uri) {
+                            document.getElementById('results').innerHTML = '<img id="base64image123" src="' + data_uri + '"/>';
+                            //document.getElementById('miguel_teste').innerHTML = data_uri    ;
+                            $("#miguel_teste").val(data_uri);
+                        });
+
+                        var arquivo = $("#miguel_teste").val();
+                        var ip_servidor = $("#ip_servidor").val();
+
+                        // teste = "opie";
+                        $.ajax({
+                            url: 'enviar_imagem.php',
+                            data: {arquivo: arquivo,ip_servidor:ip_servidor},
+                            context: document.body,
+                            success: function (data) {
+                                $("#salva").html(data);
+
+                            },
+                            type: 'POST'
+                        });
+
+                        time++;
+                    }
+                    else {
+                        clearInterval(interval);
+                        alert("FIM");
+                    }
+                }, tempo_sec);
+
+
+
+
 
             });
 
@@ -45,14 +65,10 @@
 
         function mostrar_camera() {
             Webcam.set({
-                width: 640,
-                height: 480,
-                dest_width: 640,
-                dest_height: 480,
-                crop_width: 300,
-                crop_height: 400,
+                width: 320,
+                height: 240,
                 image_format: 'jpeg',
-                jpeg_quality: 100,
+                jpeg_quality: 90,
                 flip_horiz: true
             });
             Webcam.attach('#minha_camera');
@@ -78,51 +94,43 @@
             var showup2 = document.getElementById("carregando").innerHTML = '<b>Upload feito:</b>';
         }
 
-        window.onload = mostrar_camera;
+
+        try {
+            window.onload = mostrar_camera;
+        }
+        catch (exp) {
+            console.error(exp);
+            $Error("Webcam access error! Try to use https:// protocol");
+        }
+
+
     </script>
     <style type="text/css">
-        .container {
-            float: left;
-            width: 320px;
-            height: 480px;
-            margin-right: 5px;
-            padding: 5px;
-        }
 
-        #camera {
-            background: #ff6666;
-            height: 800px;
-        }
 
-        #previa {
-            background: #ffc865;
-            height: 800px;
-        }
 
-        #salva {
-            background: #4dea02;
-            height: 800px;
-        }
     </style>
 </head>
 <body>
 <div class="container" id="camera">
+    <p>Temporizador:</p>
+    <input id="tempo_sec" type="text" style="width: 50px" value="150" ><br/>
     <p>Servidor:</p>
     <input id="ip_servidor" type="text" style="width: 300px" value="http://94550baedc70.sn.mynetname.net/facepose">
     <p>Externo: http://94550baedc70.sn.mynetname.net/facepose</p>
     <p>Interno: http://192.168.88.211:5000/facepose</p>
-    <form><input id="btn_bater_foto" type="button" value="Tirar Foto"></form>
+    <form><input id="btn_bater_foto" type="button" value="Iniciar Captura"></form>
     <div id="minha_camera"></div>
 </div>
-<div class="container" id="previa">
+<div id="previa">
     <b>Prévia:</b>
-    <div id="results" style="width: 250px;"></div>
+    <div id="results" ></div>
 </div>
 
 <div class="container" id="salva">
     <span id="carregando"></span><img id="completado" src=""/>
 </div>
-<textarea id="miguel_teste"></textarea>
+<input type="hidden" value="" id="miguel_teste">
 
 </body>
 </htm>

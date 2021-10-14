@@ -19,7 +19,7 @@
                 var time = 0;
 
                 var interval = setInterval(function() {
-                    if (time <= 1500) {
+                    if (time <= 0) {
                         //alert(time);
                         Webcam.snap(function (data_uri) {
                             document.getElementById('results').innerHTML = '<img id="base64image123" src="' + data_uri + '"/>';
@@ -46,7 +46,7 @@
                     }
                     else {
                         clearInterval(interval);
-                        alert("FIM");
+                        //alert("FIM");
                     }
                 }, tempo_sec);
 
@@ -67,6 +67,8 @@
             Webcam.set({
                 width: 320,
                 height: 240,
+                dest_width: 320,
+                dest_height: 240,
                 image_format: 'jpeg',
                 jpeg_quality: 90,
                 flip_horiz: true

@@ -70,9 +70,15 @@
                 dest_width: 320,
                 dest_height: 240,
                 image_format: 'jpeg',
+                force_flash: false,
                 jpeg_quality: 90,
                 flip_horiz: true
             });
+
+            Webcam.set("constraints", {
+                optional: [{ minWidth: 600 }]
+            });
+
             Webcam.attach('#minha_camera');
         }
 

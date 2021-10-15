@@ -64,17 +64,7 @@
 
 
         function mostrar_camera() {
-            Webcam.set({
-                width: 320,
-                height: 240,
-                dest_width: 320,
-                dest_height: 240,
-                image_format: 'jpeg',
-                force_flash: false,
-                jpeg_quality: 90,
-                flip_horiz: true
-            });
-
+            
             if (screen.height <= screen.width) {
                 // Landscape
                 Webcam.set({
